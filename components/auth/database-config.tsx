@@ -147,7 +147,7 @@ export function DatabaseConfigComponent({ onConfigChange, onTestConnection, init
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full h-fit">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Database className="h-5 w-5" />

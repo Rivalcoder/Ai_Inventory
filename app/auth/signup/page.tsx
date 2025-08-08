@@ -96,7 +96,7 @@ const localAuthService = new LocalAuthService();
 
 export default function SignUpPage() {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -272,7 +272,7 @@ export default function SignUpPage() {
           className="w-full max-w-7xl"
         >
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-4">
             <Button
               variant="ghost"
               onClick={() => router.push('/landing')}
@@ -282,7 +282,7 @@ export default function SignUpPage() {
               Back
             </Button>
             
-            <div className="flex items-center justify-center space-x-2 mb-4">
+            <div className="flex items-center justify-center space-x-2 mb-2">
               <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
                 <Package className="w-5 h-5 text-white" />
               </div>
@@ -295,8 +295,13 @@ export default function SignUpPage() {
             <p className="text-gray-400">Set up your AI-powered inventory management system</p>
           </div>
 
+          <progress
+            className="progress w-full h-2 mb-5 rounded-full [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-[#3b4049] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-[#10b981] [&::-moz-progress-bar]:bg-[#10b981]"
+            value={step - 1}
+            max="2"
+          ></progress>
           {/* Progress Steps */}
-          <div className="flex items-center justify-center mb-8">
+          {/* <div className="flex items-center justify-center mb-8">
             <div className="flex items-center space-x-4">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-emerald-500' : 'bg-gray-600'}`}>
                 <span className="text-white text-sm font-semibold">1</span>
@@ -306,7 +311,7 @@ export default function SignUpPage() {
                 <span className="text-white text-sm font-semibold">2</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Error/Success Messages */}
           {error && (
@@ -339,98 +344,11 @@ export default function SignUpPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Side - Authentication Mode & Database Configuration */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="space-y-6"
-            >
-              {/* Authentication Mode Selector */}
-              <Card className="border-0 shadow-2xl bg-white/10 backdrop-blur-xl border border-white/20">
-                <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center">
-                    <Settings className="w-5 h-5 mr-2" />
-                    Authentication Mode
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Tabs value={authMode} onValueChange={(value) => setAuthMode(value as 'airtable' | 'local')}>
-                    <TabsList className="grid w-full grid-cols-2 bg-white/10">
-                      <TabsTrigger 
-                        value="airtable" 
-                        className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
-                      >
-                        <Cloud className="w-4 h-4 mr-2" />
-                        Cloud
-                      </TabsTrigger>
-                      <TabsTrigger 
-                        value="local" 
-                        className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
-                      >
-                        <Database className="w-4 h-4 mr-2" />
-                        Local
-                      </TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="airtable" className="mt-4">
-                      <div className="text-sm text-gray-300 space-y-2">
-                        <div className="flex items-center space-x-2">
-                          <Shield className="w-4 h-4 text-emerald-400" />
-                          <span>Cloud-based authentication using Airtable</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Zap className="w-4 h-4 text-emerald-400" />
-                          <span>Data stored securely in the cloud</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Cloud className="w-4 h-4 text-emerald-400" />
-                          <span>Requires internet connection</span>
-                        </div>
-                      </div>
-                    </TabsContent>
-                    
-                    <TabsContent value="local" className="mt-4">
-                      <div className="text-sm text-gray-300 space-y-2">
-                        <div className="flex items-center space-x-2">
-                          <Database className="w-4 h-4 text-emerald-400" />
-                          <span>Local authentication system</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Shield className="w-4 h-4 text-emerald-400" />
-                          <span>Data stored locally in your browser</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Zap className="w-4 h-4 text-emerald-400" />
-                          <span>Works offline</span>
-                        </div>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
-                </CardContent>
-              </Card>
-
-              {/* Database Configuration (Step 2) */}
-              {step === 2 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <DatabaseConfigComponent
-                    onConfigChange={handleDatabaseConfigChange}
-                    onTestConnection={handleTestConnection}
-                    initialConfig={databaseConfig}
-                  />
-                </motion.div>
-              )}
-            </motion.div>
-
-            {/* Right Side - Account Creation Form */}
-            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <Card className="border-0 shadow-2xl bg-white/10 backdrop-blur-xl border border-white/20 h-full">
+              <Card className="border-0 shadow-2xl bg-white/10 backdrop-blur-xl border border-white/20 h-fit">
                 <CardHeader>
                   <CardTitle className="text-white text-xl flex items-center">
                     <User className="w-6 h-6 mr-3" />
@@ -537,6 +455,107 @@ export default function SignUpPage() {
                   </div>
                 </CardContent>
               </Card>
+            </motion.div>
+
+            {/* Right Side - Account Creation Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="space-y-6"
+            >
+
+              {/* Authentication Mode Selector */}
+              {step == 1 && (
+                <motion.div className='h-full flex items-center'>
+                <Card className="border-0 shadow-2xl bg-white/10 backdrop-blur-xl border border-white/20 w-full h-fit">
+                <CardHeader>
+                  <CardTitle className="text-white text-lg flex items-center">
+                    <Settings className="w-5 h-5 mr-2" />
+                    Authentication Mode
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Tabs value={authMode} onValueChange={(value) => setAuthMode(value as 'airtable' | 'local')}>
+                    <TabsList className="grid w-full grid-cols-2 bg-white/10">
+                      <TabsTrigger 
+                        value="airtable" 
+                        className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
+                      >
+                        <Cloud className="w-4 h-4 mr-2" />
+                        Cloud
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="local" 
+                        className="data-[state=active]:bg-emerald-500 data-[state=active]:text-white"
+                      >
+                        <Database className="w-4 h-4 mr-2" />
+                        Local
+                      </TabsTrigger>
+                    </TabsList>
+
+                    <div className="flex items-start space-x-3 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 mt-4">
+                      <Database className="w-8 h-8 text-emerald-400 mt-1" />
+                      <div>
+                        <h3 className="font-semibold text-white text-lg">Local Authentication</h3>
+                        <p className="text-gray-300 text-sm mt-1">Secure Local-based authentication using SQL</p>
+                      </div>
+                    </div>
+                    
+                    <TabsContent value="airtable" className="mt-4">
+                      <div className="text-sm text-gray-300 space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Shield className="w-4 h-4 text-emerald-400" />
+                          <span>Cloud-based authentication using Airtable</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Zap className="w-4 h-4 text-emerald-400" />
+                          <span>Data stored securely in the cloud</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Cloud className="w-4 h-4 text-emerald-400" />
+                          <span>Requires internet connection</span>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="local" className="mt-4">
+                      <div className="text-sm text-gray-300 space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Database className="w-4 h-4 text-emerald-400" />
+                          <span>Local authentication system</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Shield className="w-4 h-4 text-emerald-400" />
+                          <span>Data stored locally in your browser</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Zap className="w-4 h-4 text-emerald-400" />
+                          <span>Works offline</span>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+              </motion.div>
+            )}
+
+              {/* Database Configuration (Step 2) */}
+              {step === 2 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="h-[calc(100vh-210px)] overflow-y-scroll rounded-lg [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                >
+                  <DatabaseConfigComponent
+                    onConfigChange={handleDatabaseConfigChange}
+                    onTestConnection={handleTestConnection}
+                    initialConfig={databaseConfig}
+                  />
+                </motion.div>
+              )}
             </motion.div>
           </div>
         </motion.div>
